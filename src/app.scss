@@ -1,0 +1,184 @@
+:root {
+	--back-0: rgb(24, 24, 26);
+	--back-1: rgba(32, 31, 32, 0.8);
+	--back-2: rgba(42, 40, 43, 0.7);
+	--back-3: rgba(50, 50, 51, 0.6);
+	--back-4: rgba(70, 69, 71, 0.5);
+
+	--front-0: rgb(226, 224, 230);
+	--front-1: rgb(185, 183, 189);
+	--front-2: rgb(148, 147, 150);
+	--front-3: rgb(129, 129, 129);
+	--front-4: rgb(98, 96, 100);
+}
+
+* {
+	transition: all 100ms ease-out, width 0ms, height 0ms;
+}
+
+body {
+	background-color: var(--back-0);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	margin: 0;
+}
+
+@mixin relativeSize($relative, $min, $max) {
+	width: $relative;
+	height: $relative;
+
+	min-width: $min;
+	min-height: $min;
+
+	max-width: $max;
+	max-height: $max;
+}
+
+.board {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	align-items: stretch;
+    justify-items: stretch;
+}
+
+.big.board {
+	gap: 20px;
+
+	@include relativeSize(45vw, 600px, 700px);
+
+	border-radius: 24px;
+
+	overflow: hidden;
+
+	background-color: var(--back-1);
+	background-image: linear-gradient(
+		rgb(from var(--front-2) r g b /0.2),
+			rgba(255, 255, 255, 0)
+	);
+	background-blend-mode: overlay;
+
+	--border-opacity: 0.3;
+	border: solid 3px rgb(from var(--front-3) r g b /var(--border-opacity));
+
+	--shadow-y: 3px;
+	--shadow-blur: 20px;
+	box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgb(from var(--front-2) r g b /0.2);
+
+	&:hover {
+		--border-opacity: 0.4;
+		--shadow-y: 5px;
+		--shadow-blur: 25px;
+	}
+
+	&.disabled {
+		pointer-events: none;
+	}
+}
+
+.game-toolbar {
+	display: flex;
+	color: var(--front-0);
+
+	& > *:last-child {
+		margin-left: auto;
+	}
+}
+
+.small.board {
+	div:has(> &) {
+		padding: 15px;
+		background-color: var(--back-2);
+
+		&:hover:has(* > button:not(.disabled):not(:disabled)) {
+			background-color: var(--back-3);
+		}
+	}
+
+	height: 100%;
+	width: 100%;
+	position: relative;
+	gap: 10px;
+	background-color: var(--back-3);
+	border-radius: 16px;
+	overflow: hidden;
+
+	--border-opacity: 0.3;
+	border: solid 2px rgb(from var(--front-1) r g b /var(--border-opacity));
+	
+	--shadow-y: 3px;
+	--shadow-blur: 20px;
+	box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgb(from var(--front-2) r g b /0.1);
+
+	&:hover:has(& > button:not(.disabled):not(:disabled)) {
+		--border-opacity: 0.4;
+		--shadow-y: 5px;
+		--shadow-blur: 25px;
+	}
+
+	@mixin smallBoardWin($tick: none) {
+		background: {
+			color: rgb(from var(--back-2) r g b /0.5);
+			image: $tick;
+			size: 80%;
+			position: center;
+			repeat: no-repeat;
+		}
+
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	&.X::before {
+		@include smallBoardWin(
+			url("/src/assets/X.svg")
+		);
+	}
+
+	&.O::before {
+		@include smallBoardWin(
+			url("/src/assets/O.svg")
+		);
+	}
+
+	&.tie::before {
+		@include smallBoardWin();
+	}
+
+	&>button {
+		background-color: var(--back-4);
+		border: none;
+		box-sizing: border-box;
+		padding: 5px;
+		
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:hover {
+			background-color: var(--front-4);
+		}
+
+		&>img {
+			width: 90%;
+			height: 90%;
+			max-width: 50px;
+			max-height: 50px;
+			display: block;
+			font-size: 0;
+		}
+
+		&.disabled {
+			background-color: var(--back-3);
+			pointer-events: none;
+		}
+
+		&:disabled {
+			@extend .disabled;
+		}
+	}
+}
