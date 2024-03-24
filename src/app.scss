@@ -12,8 +12,14 @@
 	--front-4: rgb(98, 96, 100);
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:ital,wght@0,400..800;1,400..800&display=swap');
+
 * {
 	transition: all 100ms ease-out, width 0ms, height 0ms;
+	font-family: "Wix Madefor Text", sans-serif;
+
+
+	font-size: 16px;
 }
 
 body {
@@ -34,6 +40,14 @@ body {
 
 	max-width: $max;
 	max-height: $max;
+}
+
+@mixin border($color, $width: 3px) {
+	--border-opacity: 0.3;
+	border: solid $width rgb(from $color r g b /var(--border-opacity));
+	&:hover {
+		--border-opacity: 0.4;
+	}
 }
 
 .board {
@@ -64,15 +78,13 @@ body {
 	);
 	background-blend-mode: overlay;
 
-	--border-opacity: 0.3;
-	border: solid 3px rgb(from var(--front-3) r g b /var(--border-opacity));
+	@include border(var(--front-3));
 
 	--shadow-y: 3px;
 	--shadow-blur: 20px;
 	box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgb(from var(--front-2) r g b /0.2);
 
 	&:hover {
-		--border-opacity: 0.4;
 		--shadow-y: 5px;
 		--shadow-blur: 25px;
 	}
@@ -83,11 +95,36 @@ body {
 }
 
 .game-toolbar {
-	display: flex;
-	color: var(--front-0);
+	margin-top: 3px;
 
-	& > *:last-child {
-		margin-left: auto;
+	display: flex;
+
+	& > button {
+		position: absolute;
+		border-radius: 10px;
+		border: none;
+	}
+	
+	& > span {
+		text-align: center;
+		color: var(--front-2);
+		width: 100% ;
+	}
+}
+
+button {
+	@include border(var(--front-0), 2px);
+	background-color: var(--back-3);
+	color: var(--front-1);
+	padding: 3px 10px;
+	margin: 0px 0px;
+	text-transform: capitalize;
+
+	&:hover {
+		color: var(--front-2);
+	}
+	&:active {
+		color: var(--front-3);
 	}
 }
 
@@ -109,15 +146,13 @@ body {
 	border-radius: 16px;
 	overflow: hidden;
 
-	--border-opacity: 0.3;
-	border: solid 2px rgb(from var(--front-1) r g b /var(--border-opacity));
+	@include border(var(--front-1));
 	
 	--shadow-y: 3px;
 	--shadow-blur: 20px;
 	box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgb(from var(--front-2) r g b /0.1);
 
 	&:hover:has(button:not(.disabled):not(:disabled)) {
-		--border-opacity: 0.4;
 		--shadow-y: 5px;
 		--shadow-blur: 25px;
 	}
@@ -158,6 +193,8 @@ body {
 		border: none;
 		box-sizing: border-box;
 		padding: 5px;
+
+		margin: 0;
 		
 		display: flex;
 		justify-content: center;

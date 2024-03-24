@@ -92,7 +92,7 @@ export default function BigBoard() {
 
 			<div className="game-toolbar">
 				<button onClick={resetBoards}>reset</button>
-				<span>current turn: {boolToSymbol(turn)}</span>
+				<span>Current turn: {boolToSymbol(turn)}</span>
 			</div>
 		</>
 	);
