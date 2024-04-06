@@ -9,5 +9,6 @@ export default defineConfig({
     alias: {
       "!assets": resolve("./src/assets")
     }
-  }
+  },
+  base: "/Super-Tick-Tack-Toe/"
 });
