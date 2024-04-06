@@ -32,9 +32,9 @@ export default function WinOverlay({ winner, resetFn }) {
 							src={url}
 							key={i}
 							style={{
-								"--size": Math.random() * 70 + 50 + "px",
-								"--rotate": Math.random() * 50 - 25 + "deg",
-								"--x": Math.random() * 100 + "vw",
+								"--size": Math.random() * 10 + 10 + "vw",
+								"--rotate": Math.random() * 30 - 15 + "deg",
+								"--x": Math.random() * 105 - 5 + "vw",
 								"--o": Math.random() * 0.5 + 0.5,
 								"--d": Math.random() * 1000 + "ms",
 							}}

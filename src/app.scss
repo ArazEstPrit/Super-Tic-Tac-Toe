@@ -31,7 +31,12 @@ body {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
+	overflow-y: clip;
 	margin: 0;
+}
+
+#root {
+	overflow: visible;
 }
 
 @mixin border($color, $width: 3px) {
@@ -57,19 +62,24 @@ body {
 
 .big.board {
 	gap: 20px;
+	@media (max-width: 600px) {
+		gap: 3vw;
+	}
+
+	--relative-size: 95vw;
+	width: var(--relative-size);
+	height: var(--relative-size);
 
 	--size: 640px;
-	width: var(--size);
-	height: var(--size);
+	max-width: var(--size);
+	max-height: var(--size);
 
 	border-radius: 24px;
 
 	overflow: hidden;
-
+	
 	background-color: var(--back-1);
-	background-image: linear-gradient(rgb(from var(--front-2) r g b /0.2),
-			rgba(255, 255, 255, 0));
-	background-blend-mode: overlay;
+	background-image: linear-gradient(var(--back-2), var(--back-1));
 
 	@include border(var(--front-3));
 
@@ -95,8 +105,8 @@ body {
 	display: flex;
 
 	&>button {
-		position: absolute;
 		border-radius: 10px;
+		z-index: 3;
 		border: none;
 	}
 
@@ -126,10 +136,14 @@ button {
 		background-color: var(--back-2);
 	}
 }
-
 .small.board {
 	div:has(> &) {
 		padding: 15px;
+
+		@media (max-width: 600px) {
+			padding: 2.5vw;
+		}
+
 		background-color: var(--back-2);
 
 		display: flex;
@@ -139,14 +153,18 @@ button {
 			background-color: var(--back-3);
 		}
 	}
-
 	height: 100%;
 	width: 100%;
 	position: relative;
-	gap: 10px;
 	background-color: var(--back-3);
 	border-radius: 16px;
+	box-sizing: border-box;
 	overflow: hidden;
+
+	gap: 10px;
+	@media (max-width: 600px) {
+		gap: 1.2vw;
+	}
 
 	@include border(var(--front-1));
 
@@ -207,10 +225,10 @@ button {
 		}
 
 		&>img {
-			width: 90%;
-			height: 90%;
-			max-width: 50px;
-			max-height: 50px;
+			width: 100%;
+			height: 100%;
+			max-width: 32px;
+			max-height: 32px;
 			display: block;
 			font-size: 0;
 		}
@@ -239,7 +257,6 @@ button {
 
 	overflow: hidden;
 
-	// background-color: ;
 	backdrop-filter: blur(7px);
 
 	opacity: 1;
@@ -247,16 +264,17 @@ button {
 
 	&>img {
 		width: var(--size);
+		max-width: 150px;
 		position: absolute;
 		top: 0;
 		left: 0;
 		opacity: var(--o);
 		transform:
-			translateX(var(--x)) translateY(-20vh) rotate(var(--rotate));
+			translateX(var(--x)) translateY(-50vh) rotate(var(--rotate));
 
 		animation: {
 			name: rainfall;
-			duration: 0.5s;
+			duration: 0.7s;
 			timing-function: ease-in;
 			iteration-count: infinite;
 			delay: var(--d);
@@ -267,12 +285,12 @@ button {
 @keyframes rainfall {
 	0% {
 		transform:
-			translateX(var(--x)) translateY(-20vh) rotate(var(--rotate));
+			translateX(var(--x)) translateY(-50vh) rotate(var(--rotate));
 	}
 
 	100% {
 		transform:
-			translateX(var(--x)) translateY(105vh) rotate(var(--rotate));
+			translateX(var(--x)) translateY(150vh) rotate(var(--rotate));
 	}
 }
 
@@ -289,6 +307,12 @@ button {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	box-sizing: border-box;
+
+	@media (max-width: 600px) {
+		width: 100vw;
+		border-radius: 0;
+	}
 
 	animation: win-menu 0.3s ease-in-out;
 
@@ -312,7 +336,7 @@ button {
 	& img {
 		display: block;
 		font-size: 0;
-		margin-right: 12px;
+		margin-right: 16px;
 		width: $font-size;
 	}
 }
