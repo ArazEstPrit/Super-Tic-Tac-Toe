@@ -16,9 +16,12 @@
 
 * {
 	transition: all 100ms ease-out, width 0ms, height 0ms;
+
+	&:active {
+		transition: 20ms;
+	}
+
 	font-family: "Wix Madefor Text", sans-serif;
-
-
 	font-size: 16px;
 }
 
@@ -31,20 +34,10 @@ body {
 	margin: 0;
 }
 
-@mixin relativeSize($relative, $min, $max) {
-	width: $relative;
-	height: $relative;
-
-	min-width: $min;
-	min-height: $min;
-
-	max-width: $max;
-	max-height: $max;
-}
-
 @mixin border($color, $width: 3px) {
 	--border-opacity: 0.3;
 	border: solid $width rgb(from $color r g b /var(--border-opacity));
+
 	&:hover {
 		--border-opacity: 0.4;
 	}
@@ -55,13 +48,15 @@ body {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-rows: 1fr 1fr 1fr;
 	align-items: stretch;
-    justify-items: stretch;
+	justify-items: stretch;
+
+	& button {
+		border-radius: 0;
+	}
 }
 
 .big.board {
 	gap: 20px;
-
-	// @include relativeSize(45vw, 600px, 700px);
 
 	--size: 640px;
 	width: var(--size);
@@ -72,10 +67,8 @@ body {
 	overflow: hidden;
 
 	background-color: var(--back-1);
-	background-image: linear-gradient(
-		rgb(from var(--front-2) r g b /0.2),
-			rgba(255, 255, 255, 0)
-	);
+	background-image: linear-gradient(rgb(from var(--front-2) r g b /0.2),
+			rgba(255, 255, 255, 0));
 	background-blend-mode: overlay;
 
 	@include border(var(--front-3));
@@ -97,18 +90,21 @@ body {
 .game-toolbar {
 	margin-top: 3px;
 
+	position: relative;
+
 	display: flex;
 
-	& > button {
+	&>button {
 		position: absolute;
 		border-radius: 10px;
 		border: none;
 	}
-	
-	& > span {
+
+	&>span {
 		text-align: center;
 		color: var(--front-2);
-		width: 100% ;
+		width: 100%;
+		position: absolute;
 	}
 }
 
@@ -117,14 +113,17 @@ button {
 	background-color: var(--back-3);
 	color: var(--front-1);
 	padding: 3px 10px;
+	border-radius: 8px;
 	margin: 0px 0px;
 	text-transform: capitalize;
 
 	&:hover {
 		color: var(--front-2);
 	}
+
 	&:active {
 		color: var(--front-3);
+		background-color: var(--back-2);
 	}
 }
 
@@ -132,6 +131,9 @@ button {
 	div:has(> &) {
 		padding: 15px;
 		background-color: var(--back-2);
+
+		display: flex;
+		align-items: center;
 
 		&:hover:has(* > button:not(.disabled):not(:disabled)) {
 			background-color: var(--back-3);
@@ -147,7 +149,7 @@ button {
 	overflow: hidden;
 
 	@include border(var(--front-1));
-	
+
 	--shadow-y: 3px;
 	--shadow-blur: 20px;
 	box-shadow: 0 var(--shadow-y) var(--shadow-blur) rgb(from var(--front-2) r g b /0.1);
@@ -173,15 +175,11 @@ button {
 	}
 
 	&.X::before {
-		@include smallBoardWin(
-			url("/src/assets/X.svg")
-		);
+		@include smallBoardWin(url("/src/assets/X.svg"));
 	}
 
 	&.O::before {
-		@include smallBoardWin(
-			url("/src/assets/O.svg")
-		);
+		@include smallBoardWin(url("/src/assets/O.svg"));
 	}
 
 	&.tie::before {
@@ -195,12 +193,16 @@ button {
 		padding: 5px;
 
 		margin: 0;
-		
+
 		display: flex;
 		justify-content: center;
 		align-items: center;
 
 		&:hover {
+			background-color: var(--front-3);
+		}
+
+		&:active {
 			background-color: var(--front-4);
 		}
 
@@ -221,5 +223,108 @@ button {
 		&:disabled {
 			@extend .disabled;
 		}
+	}
+}
+
+.win-animation {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	overflow: hidden;
+
+	// background-color: ;
+	backdrop-filter: blur(7px);
+
+	opacity: 1;
+	z-index: 10;
+
+	&>img {
+		width: var(--size);
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: var(--o);
+		transform:
+			translateX(var(--x)) translateY(-20vh) rotate(var(--rotate));
+
+		animation: {
+			name: rainfall;
+			duration: 0.5s;
+			timing-function: ease-in;
+			iteration-count: infinite;
+			delay: var(--d);
+		}
+	}
+}
+
+@keyframes rainfall {
+	0% {
+		transform:
+			translateX(var(--x)) translateY(-20vh) rotate(var(--rotate));
+	}
+
+	100% {
+		transform:
+			translateX(var(--x)) translateY(105vh) rotate(var(--rotate));
+	}
+}
+
+.win-menu {
+	position: absolute;
+
+	z-index: 20;
+
+	padding: 40px 60px;
+	background-color: var(--back-1);
+	border-radius: 24px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	animation: win-menu 0.3s ease-in-out;
+
+	$font-size: 64px;
+
+	& h1 {
+		font-size: $font-size;
+		color: var(--front-0);
+		display: flex;
+		margin: 20px;
+	}
+
+	& button {
+		width: 150px;
+		height: 50px;
+		font-size: 18px;
+		margin: 10px;
+		font-weight: bold;
+	}
+
+	& img {
+		display: block;
+		font-size: 0;
+		margin-right: 12px;
+		width: $font-size;
+	}
+}
+
+@keyframes win-menu {
+	from {
+		opacity: 0;
+		transform: translateY(100px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }

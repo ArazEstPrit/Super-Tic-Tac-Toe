@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { SmallBoard } from "./SmallBoard";
 import { checkWin, boolToSymbol, noEmptyCellLeft } from "./boardUtils";
+import WinOverlay from "./WinOverlay";
 
 export default function BigBoard() {
 	const [boardState, setBoardState] = useState(
@@ -20,17 +21,14 @@ export default function BigBoard() {
 		const updatedBigBoard = [...bigBoard];
 		updatedBigBoard[boardId] = winner;
 		setBigBoard(updatedBigBoard);
-		console.log(updatedBigBoard);
 
 		checkWin(updatedBigBoard, bigBoardWin);
 	}
 
+	const [bigWinner, setBigWinner] = useState(null);
+
 	function bigBoardWin(winner) {
-		if (winner == "tie") {
-			alert("Its a tie");
-		} else {
-			alert(`Winner is ${boolToSymbol(winner)}`);
-		}
+		setBigWinner(winner);
 		setGameOver(true);
 	}
 
@@ -91,9 +89,19 @@ export default function BigBoard() {
 			</div>
 
 			<div className="game-toolbar">
-				<button onClick={resetBoards}>reset</button>
-				<span>Current turn: {boolToSymbol(turn)}</span>
+				<span style={{ display: gameOver ? "none" : "initial" }}>
+					Current turn: {boolToSymbol(turn)}
+				</span>
+				<button id="reset" onClick={resetBoards}>
+					reset
+				</button>
 			</div>
+
+			{gameOver ? (
+				<WinOverlay resetFn={resetBoards} winner={bigWinner} />
+			) : (
+				""
+			)}
 		</>
 	);
 }
