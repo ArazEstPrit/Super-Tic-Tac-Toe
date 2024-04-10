@@ -268,27 +268,28 @@ button {
 		position: absolute;
 		top: 0;
 		left: 0;
-		opacity: var(--o);
+		opacity: var(--opacity);
 		transform:
 			translateX(var(--x)) translateY(-50vh) rotate(var(--rotate));
 
 		animation: {
 			name: rainfall;
-			duration: 0.7s;
+			duration: var(--length);
 			timing-function: ease-in;
-			iteration-count: infinite;
-			delay: var(--d);
+			iteration-count: 1;
 		}
 	}
 }
 
 @keyframes rainfall {
 	0% {
+		opacity: calc(var(--opacity) * 1);
 		transform:
 			translateX(var(--x)) translateY(-50vh) rotate(var(--rotate));
 	}
 
 	100% {
+		opacity: calc(var(--opacity) * 0.5);
 		transform:
 			translateX(var(--x)) translateY(150vh) rotate(var(--rotate));
 	}
