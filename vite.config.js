@@ -10,5 +10,5 @@ export default defineConfig({
       "!assets": resolve("./src/assets")
     }
   },
-  base: "/Super-Tick-Tack-Toe/"
+  base: "/Super-Tic-Tac-Toe/"
 });
