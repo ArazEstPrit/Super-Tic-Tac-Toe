@@ -33,6 +33,23 @@ body {
 	}
 }
 
+body::-webkit-scrollbar {
+	width: 8px
+}
+
+body::-webkit-scrollbar-track {
+	background: var(--back-0);
+}
+
+body::-webkit-scrollbar-thumb {
+	background: var(--front-4);
+	border-radius: 8px;
+
+	&:hover {
+		background: var(--front-3);
+	}
+}
+
 #root {
 	background-color: var(--back-0);
 	display: flex;
