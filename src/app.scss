@@ -26,18 +26,79 @@
 }
 
 body {
-	background-color: var(--back-0);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	overflow-y: clip;
-	margin: 0;
+	margin: 0px;
+
+	&:has(.win-animation) {
+		overflow: hidden;
+	}
 }
 
 #root {
-	overflow: visible;
+	background-color: var(--back-0);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	width: 100%;
+	margin: 0;
 }
+
+.left-info {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 400px;
+	margin: 20px;
+	
+	@media (max-width: 1350px) {
+		position: initial;
+		& > h1, & > p {
+			text-align: center;
+		}
+		align-items: center;
+		margin: 10px;
+	}
+	
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	
+	@media (max-width: 600px) {
+		width: 95%;
+	}
+	
+	& > h1 {
+		color: var(--front-3);
+		margin: 0;
+		margin-bottom: 8px;
+		font-size: 3.5rem;
+	}
+	
+	& > p {
+		color: var(--front-1);
+		text-wrap: balance;
+	}
+	
+	& a {
+		color: var(--front-0);
+	}
+	
+	& .github > img {
+		width: 32px;
+		height: 32px;
+		opacity: 0.5;
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+
+html {
+	font-size: 18px;
+}
+
 
 @mixin border($color, $width: 3px) {
 	--border-opacity: 0.3;
@@ -61,6 +122,18 @@ body {
 }
 
 .big.board {
+	
+	div:has(> &) {
+		z-index: 3;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		@media (max-width: 1350px) {
+			height: 800px;
+		}
+	}
+
+
 	gap: 20px;
 	@media (max-width: 600px) {
 		gap: 3vw;

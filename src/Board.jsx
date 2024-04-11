@@ -80,7 +80,7 @@ export default function BigBoard() {
 		));
 
 	return (
-		<>
+		<div>
 			<div
 				id="game-board"
 				className={`big board ${gameOver ? "disabled" : ""}`}
@@ -102,6 +102,6 @@ export default function BigBoard() {
 			) : (
 				""
 			)}
-		</>
+		</div>
 	);
 }
